@@ -1,6 +1,6 @@
 {
     "name": "phpframeworkstudio/yii",
-    "description": "PHP Framework Studio - Yii Components",
+    "description": "PHP Framework Studio - Yii 2 Components",
     "type": "library",
     "license": "BSD-3-Clause",
     "authors": [
