@@ -1,0 +1,16 @@
+{
+    "name": "phpframeworkstudio/yii",
+    "description": "PHP Framework Studio - Yii Components",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Dida Nurwanda",
+            "email": "didanurwanda@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"pfs\\yii\\": ""}
+    }
+}

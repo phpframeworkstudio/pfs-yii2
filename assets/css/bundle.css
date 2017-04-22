@@ -1,0 +1,180 @@
+body {
+    font-size: 12px;
+}
+
+.min-width-5 { min-width: 5px }
+.min-width-10 { min-width: 10px }
+.min-width-20 { min-width: 20px }
+.min-width-30 { min-width: 30px }
+.min-width-40 { min-width: 40px }
+.min-width-50 { min-width: 50px }
+.min-width-60 { min-width: 60px }
+.min-width-70 { min-width: 70px }
+.min-width-80 { min-width: 80px }
+.min-width-90 { min-width: 90px }
+.min-width-100 { min-width: 100px }
+.min-width-110 { min-width: 110px }
+.min-width-120 { min-width: 120px }
+.min-width-130 { min-width: 130px }
+.min-width-140 { min-width: 140px }
+.min-width-150 { min-width: 150px }
+.width-5 { width: 5px }
+.width-10 { width: 10px }
+.width-20 { width: 20px }
+.width-30 { width: 30px }
+.width-40 { width: 40px }
+.width-50 { width: 50px }
+.width-60 { width: 60px }
+.width-70 { width: 70px }
+.width-80 { width: 80px }
+.width-90 { width: 90px }
+.width-100 { width: 100px }
+.width-110 { width: 110px }
+.width-120 { width: 120px }
+.width-130 { width: 130px }
+.width-140 { width: 140px }
+.width-150 { width: 150px }
+.max-width-5 { max-width: 5px }
+.max-width-10 { max-width: 10px }
+.max-width-20 { max-width: 20px }
+.max-width-30 { max-width: 30px }
+.max-width-40 { max-width: 40px }
+.max-width-50 { max-width: 50px }
+.max-width-60 { max-width: 60px }
+.max-width-70 { max-width: 70px }
+.max-width-80 { max-width: 80px }
+.max-width-90 { max-width: 90px }
+.max-width-100 { max-width: 100px }
+.max-width-110 { max-width: 110px }
+.max-width-120 { max-width: 120px }
+.max-width-130 { max-width: 130px }
+.max-width-140 { max-width: 140px }
+.max-width-150 { max-width: 150px }
+
+.margin-l-xs { margin-left: 3px }
+.margin-l-sm { margin-left: 5px }
+.margin-l-md { margin-left: 8px }
+.margin-l-lg { margin-left: 12px }
+.margin-l-xl { margin-left: 16px }
+
+.margin-r-xs { margin-right: 3px }
+.margin-r-sm { margin-right: 5px }
+.margin-r-md { margin-right: 8px }
+.margin-r-lg { margin-right: 12px }
+.margin-r-xl { margin-right: 16px }
+
+.margin-t-xs { margin-top: 3px }
+.margin-t-sm { margin-top: 5px }
+.margin-t-md { margin-top: 8px }
+.margin-t-lg { margin-top: 12px }
+.margin-t-xl { margin-top: 16px }
+
+.margin-b-xs { margin-bottom: 3px }
+.margin-b-sm { margin-bottom: 5px }
+.margin-b-md { margin-bottom: 8px }
+.margin-b-lg { margin-bottom: 12px }
+.margin-b-xl { margin-bottom: 16px }
+
+.padding-0 { padding: 0px }
+.padding-xs { padding: 3px }
+.padding-sm, .padding-5 { padding: 5px }
+.padding-md { padding: 8px }
+.padding-10 { padding: 10px }
+.padding-lg { padding: 12px }
+.padding-xl { padding: 16px }
+
+.margin-0 { margin: 0px }
+.margin-xs { margin: 3px }
+.margin-sm, .margin-5 { margin: 5px }
+.margin-md { margin: 8px }
+.margin-10 { margin: 10px }
+.margin-lg { margin: 12px }
+.margin-xl { margin: 16px }
+
+.pagination-input {
+    width: 250px;
+}
+
+.pagination-input input {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .text-right-not-sm {
+        text-align: right;
+    }
+}
+
+.help-block {
+    margin-top: 4px;
+    margin-bottom: 2px 
+}
+
+form .grid-view .form-group {
+    margin-bottom: 0;
+}
+
+/* fieldset-collapse */
+.fieldset-panel {
+    min-width: 0;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #d2d6de;
+}
+
+.panel-legend {
+    display: block;
+    width: inherit;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: inherit;
+    color: #333;
+    border: 0;
+    border-bottom-width: 0;
+}
+
+.panel-legend i,
+.panel-legend a,
+.panel-legend a:active,
+.panel-legend a:hover,
+.panel-legend a:focus {
+    color: #666;
+}
+
+/* no wrap */
+.nowrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* Bootstrap Popover */
+.popover {
+    max-width: 80%;
+}
+
+.popover-preview {
+    font-size: 90%;
+}
+
+.btn-link:hover {
+    text-decoration: none;
+}
+
+/* https://github.com/twbs/bootstrap/issues/5704#issuecomment-14364066 */
+/* http://jsfiddle.net/yndolok/kW8h7/ */
+.btn-group > .tooltip + .btn,
+.btn-group > .popover + .btn,
+.btn-group > .btn-group {
+    margin-left:-1px;
+}
+
+.btn-group > .btn:last-of-type {
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    -moz-border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
