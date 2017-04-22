@@ -9,7 +9,10 @@
             "email": "didanurwanda@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "dmstr/yii2-adminlte-asset": "^2.3",
+        "nesbot/carbon": "^1.21"
+    },
     "autoload": {
         "psr-4": {"pfs\\yii\\": ""}
     }
