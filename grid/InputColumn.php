@@ -3,7 +3,7 @@
 namespace pfs\yii\grid;
 
 use Yii;
-use yii\helpers\Html;
+use pfs\yii\helpers\Html;
 
 class InputColumn extends DataColumn
 {
@@ -56,6 +56,16 @@ class InputColumn extends DataColumn
 
         if ($isInputMode && $isFormInput && ($displayForm = $this->renderActiveField($model, $key, $index))) {
             $displayValue = $displayForm;
+
+            if ($this->grid->rowOptions instanceof \Closure) {
+                $rowOptions = call_user_func($this->grid->rowOptions, $model, $key, $index, $this->grid);
+            } else {
+                $rowOptions = $this->grid->rowOptions;
+            }
+
+            $this->grid->rowOptions = Html::mergeAttributes($rowOptions, [
+                'class' => 'form-entry'
+            ]);
         }
 
         return $displayValue;

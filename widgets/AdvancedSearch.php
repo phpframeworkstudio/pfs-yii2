@@ -217,7 +217,7 @@ class AdvancedSearch extends \yii\base\Widget
             'size' => 'modal-lg',
             'header' => '<h4 class="modal-title">'. $this->title .'</h4>',
             'toggleButton' => $this->toggleButton === true 
-                ? Html::mergeAttribute([
+                ? Html::mergeAttributes([
                     'label' => $this->buttonLabel,
                     'class' => 'btn '. $this->buttonClass
                 ], $this->buttonOptions)
@@ -247,7 +247,7 @@ class AdvancedSearch extends \yii\base\Widget
             $result[] = Button::widget([
                 'id' => $this->getId() .'-button',
                 'label' =>  $this->buttonLabel,
-                'options' => Html::mergeAttribute([
+                'options' => Html::mergeAttributes([
                     'class' => 'btn '. $this->buttonClass
                 ], $this->buttonOptions)
             ]);
@@ -500,7 +500,7 @@ class AdvancedSearch extends \yii\base\Widget
     protected function buildField($attribute, $index = 0, $type, $items = [], $ajax = [], $form = null, $options = []) {
         $field = false;
         if ($type === 'text') {
-            $field = Html::activeTextInput($this->model, $attribute . $this->suffixColumn .'['. $index .']', Html::mergeAttribute([
+            $field = Html::activeTextInput($this->model, $attribute . $this->suffixColumn .'['. $index .']', Html::mergeAttributes([
                 'class' => 'form-control'
             ], $options));
         } else {
@@ -556,7 +556,7 @@ class AdvancedSearch extends \yii\base\Widget
                 }
             } else {
                 if ($type === 'select') {
-                    $field = Html::activeDropDownList($this->model, $attribute . $this->suffixColumn .'['. $index .']', $items, Html::mergeAttribute([
+                    $field = Html::activeDropDownList($this->model, $attribute . $this->suffixColumn .'['. $index .']', $items, Html::mergeAttributes([
                         'class' => 'form-control'
                     ], $options));
                 } elseif ($type === 'checkbox') {

@@ -53,25 +53,34 @@ class FileUpload extends \yii\widgets\InputWidget
     public $actionUrl;
 
     /**
+     * @var string Action upload url
+     */
+    public $controllerId;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         parent::init();
 
+        if ($this->controllerId === null) {
+            $this->controllerId = Yii::$app->controller->id;
+        }
+
         if ($this->actionUrl === null) {
-            $this->actionUrl = Yii::$app->controller->id .'/do-upload';
+            $this->actionUrl = $this->controllerId .'/do-upload';
         }
 
         if ($this->model->isNewRecord === false) {
             $value = ArrayHelper::getValue($this->model, $this->attribute);
-            Yii::$app->fileUploadManager->editFiles(Yii::$app->controller->id,
+            Yii::$app->fileUploadManager->editFiles($this->controllerId, 
                 $this->attribute, $this->index, $value, $this->mime);
 
             $this->model->{$this->attribute} = null;
         }
 
-        if (($params = Yii::$app->config->getValue(Yii::$app->controller->id .'.columns.'. $this->attribute)) !== null) {
+        if (($params = Yii::$app->config->getValue($this->controllerId .'.columns.'. $this->attribute)) !== null) {
             $this->params = $params;
             $this->clientOptions = array_merge([
                 'attribute' => $this->attribute,
@@ -102,7 +111,7 @@ class FileUpload extends \yii\widgets\InputWidget
         $result = [];
 
         $result[] = Html::beginTag('div', ['class' => 'fileupload', 'style' => 'position: relative']);
-        $result[] = Html::beginTag('span', Html::mergeAttribute([
+        $result[] = Html::beginTag('span', Html::mergeAttributes([
             'title' => $this->buttonLabel, 
             'class' => 'toggle-tooltip btn btn-success fileinput-button min-width-100',
         ], $this->buttonOptions));
@@ -121,7 +130,7 @@ class FileUpload extends \yii\widgets\InputWidget
             'style' => 'opacity: 0'
         ]);
         // $result[] = Html::endTag('div');
-        $result[] = Html::activeHiddenInput($this->model, $this->attribute, Html::mergeAttribute([
+        $result[] = Html::activeHiddenInput($this->model, $this->attribute, Html::mergeAttributes([
             'class' => 'file-value'
         ], $this->options));
         $result[] = Html::endTag('span');

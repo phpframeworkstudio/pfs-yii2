@@ -55,7 +55,7 @@ class ButtonBar extends \yii\base\Widget
 		$clear = function($buttons) use (&$clear) {
 			$results = [];
 			foreach ($buttons as $button) {
-				$button['linkOptions'] = Html::mergeAttribute($button['linkOptions'], $this->buttonOptions);
+				$button['linkOptions'] = Html::mergeAttributes($button['linkOptions'], $this->buttonOptions);
 
 				if (isset($button['iconCls'])) {
 					ArrayHelper::remove($button, 'iconCls');
@@ -68,7 +68,7 @@ class ButtonBar extends \yii\base\Widget
 			return $results;
 		};
 
-		$this->dropdownOptions = Html::mergeAttribute($this->dropdownOptions, [
+		$this->dropdownOptions = Html::mergeAttributes($this->dropdownOptions, [
 			'class' => 'btn btn-default',
 			'type' => 'button'
 		]);
@@ -99,7 +99,7 @@ class ButtonBar extends \yii\base\Widget
 
 			foreach ($buttons as $button) {
 				if ($isChild === false) {
-					$button['linkOptions'] = Html::mergeAttribute($button['linkOptions'], $this->buttonOptions);
+					$button['linkOptions'] = Html::mergeAttributes($button['linkOptions'], $this->buttonOptions);
 
 					if (isset($button['url'])) {
 						$button['options']['href'] = $button['url'];
@@ -107,7 +107,7 @@ class ButtonBar extends \yii\base\Widget
 
 					$button['tagName'] = 'a';
 					
-					$button['options'] = Html::mergeAttribute($button['options'], $button['linkOptions']);
+					$button['options'] = Html::mergeAttributes($button['options'], $button['linkOptions']);
 
 
 					if ($this->iconOnly && isset($button['iconCls']) && !isset($button['items'])) {

@@ -136,7 +136,7 @@ class AdvancedActionColumn extends ActionColumn
 			$width = $width * $count;
 		}
 
-		$this->headerOptions = Html::mergeAttribute([
+		$this->headerOptions = Html::mergeAttributes([
 			'style' => [
 				'width' => $width .'px',
 				'min-width' => $width .'px',
@@ -145,7 +145,7 @@ class AdvancedActionColumn extends ActionColumn
 		], $headerOptions);
 
 		$contentOptions = $this->contentOptions;
-		$this->contentOptions = Html::mergeAttribute([
+		$this->contentOptions = Html::mergeAttributes([
 			'class' => 'text-center'
 		], $contentOptions);
 	}
@@ -268,7 +268,7 @@ class AdvancedActionColumn extends ActionColumn
 		$clear = function($buttons) use (&$clear) {
 			$results = [];
 			foreach ($buttons as $button) {
-				$button['linkOptions'] = Html::mergeAttribute($button['linkOptions'], $this->buttonOptions);
+				$button['linkOptions'] = Html::mergeAttributes($button['linkOptions'], $this->buttonOptions);
 
 				if (isset($button['iconCls'])) {
 					ArrayHelper::remove($button, 'iconCls');
@@ -290,7 +290,7 @@ class AdvancedActionColumn extends ActionColumn
 			return $results;
 		};
 
-		$this->dropdownOptions = Html::mergeAttribute($this->dropdownOptions, [
+		$this->dropdownOptions = Html::mergeAttributes($this->dropdownOptions, [
 			'title' => Yii::t('app', 'Action'),
 			'type' => 'button'
 		]);
@@ -331,7 +331,7 @@ class AdvancedActionColumn extends ActionColumn
 			foreach ($buttons as $button) {
 				if ($isChild === false) {
 
-					$button['linkOptions'] = Html::mergeAttribute($button['linkOptions'], $this->buttonOptions);
+					$button['linkOptions'] = Html::mergeAttributes($button['linkOptions'], $this->buttonOptions);
 					Html::addCssClass($button['linkOptions'], 'btn-'. $this->buttonSize);
 
 					if ($this->actionType === self::ACTION_LINKS) {
@@ -352,7 +352,7 @@ class AdvancedActionColumn extends ActionColumn
 					}
 					$button['tagName'] = 'a';
 					
-					$button['options'] = Html::mergeAttribute($button['options'], $button['linkOptions']);
+					$button['options'] = Html::mergeAttributes($button['options'], $button['linkOptions']);
 					ArrayHelper::remove($button, 'linkOptions');
 
 					if (isset($button['iconCls']) && !isset($button['items'])) {
@@ -414,7 +414,7 @@ class AdvancedActionColumn extends ActionColumn
                 [
                     'label' => Html::tag('i', '', ['class' => 'fa fa-fw fa-check']),
                     'tagName' => 'button',
-                    'options' => Html::mergeAttribute([
+                    'options' => Html::mergeAttributes([
                         'class' => 'btn btn-default',
                         'type' => 'submit'
                     ], $this->buttonOptions)
@@ -422,7 +422,7 @@ class AdvancedActionColumn extends ActionColumn
                 [
                     'label' => Html::tag('i', '', ['class' => 'fa fa-fw fa-close']),
                     'tagName' => 'a',
-                    'options' => Html::mergeAttribute([
+                    'options' => Html::mergeAttributes([
                         'class' => 'btn btn-default',
 	                    'href' => Url::to($cancelUrl),
 	                    'data-pjax' => '0',

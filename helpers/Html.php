@@ -23,7 +23,7 @@ class Html extends \yii\helpers\Html
      * @param array $additional attriute to be added.
      * @return array merge result.
      */
-    public static function mergeAttribute(array $existing, array $additional)
+    public static function mergeAttributes(array $existing, array $additional)
     {
         self::reformatAttributeName($existing);
 
