@@ -229,7 +229,7 @@
                     });
                     optGroup.appendTo(self.$element);
                 });
-                self.$element.trigger('change');
+                // self.$element.trigger('change');
 
             // render dropdown
             } else {
@@ -238,9 +238,9 @@
                     self.createOptionElement(val, text, selected)
                         .appendTo(self.$element);
                 });
-                setTimeout(function() {
-                    self.$element.trigger('change');
-                }, 500);
+                // setTimeout(function() {
+                //     self.$element.trigger('change');
+                // }, 500);
             }
         },
         createOptionElement: function(val, text, selected) {
@@ -297,7 +297,7 @@
                 }
                 index++;
             });
-            self.$element.find('input[type="'+ type +'"]').trigger('change');
+            // self.$element.find('input[type="'+ type +'"]').trigger('change');
         },
         createListElement: function(type, val, text, selected, labelOptions, itemOptions, checked) {
             var self = this, $container, $label;
@@ -393,7 +393,7 @@
                     case 'dropdown':
                         self.$element.removeClass('pfs__ajax-loader');
                         self.$element.find('.pfs__loader-text').remove();
-                        self.$element.trigger('change');
+                        // self.$element.trigger('change');
                     break;
                     case 'text':
                         var value = self.$element.data().placeholder;
@@ -402,7 +402,7 @@
                         if (!isEmpty(value)) {
                             self.$element.attr('placeholder', value);
                         }
-                        self.$element.trigger('change');
+                        // self.$element.trigger('change');
                     break;
                 }
                 self.$element.removeClass('pfs__ajax-loader');
