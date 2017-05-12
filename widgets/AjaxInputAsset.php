@@ -18,6 +18,7 @@ class AjaxInputAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
+        'pfs\yii\web\AppAsset'
     ];
 }

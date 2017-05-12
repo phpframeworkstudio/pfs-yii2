@@ -153,8 +153,20 @@ class BaseAjaxInput extends \yii\widgets\InputWidget
         $this->clientOptions['depends'] = $this->dependsFormatter();
         $this->clientOptions['options'] = $this->options;
         
+        if (empty($this->clientOptions['options']['isNewRecord']) && $this->model) {
+            $this->clientOptions['options']['isNewRecord'] = $this->model->isNewRecord;
+        }
+
         $view = $this->view;
         AjaxInputAsset::register($view);
         $view->registerJs("jQuery(\"#{$this->options['id']}\").pfsAjaxInput(". Json::encode($this->clientOptions) .");");
+
+        if (count($this->clientOptions['depends'])) {
+            $depends = [];
+            foreach ($this->clientOptions['depends'] as $depend) {
+                $depends[$depend['id']] = true;
+            }
+            $view->registerJs("jQuery(\"#{$this->options['id']}\").data(\"depends\", ". Json::encode($depends) .");");
+        }
     }
 }

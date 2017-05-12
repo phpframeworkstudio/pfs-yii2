@@ -229,7 +229,12 @@
                     });
                     optGroup.appendTo(self.$element);
                 });
-                // self.$element.trigger('change');
+
+                if (self.options.options.isNewRecord === false && self.isParents()) {
+                    setTimeout(function() {
+                        self.$element.trigger('change');
+                    }, 200);
+                }
 
             // render dropdown
             } else {
@@ -238,9 +243,12 @@
                     self.createOptionElement(val, text, selected)
                         .appendTo(self.$element);
                 });
-                // setTimeout(function() {
-                //     self.$element.trigger('change');
-                // }, 500);
+
+                if (self.options.options.isNewRecord === false && self.isParents()) {
+                    setTimeout(function() {
+                        self.$element.trigger('change');
+                    }, 200);
+                }
             }
         },
         createOptionElement: function(val, text, selected) {
@@ -297,7 +305,12 @@
                 }
                 index++;
             });
-            // self.$element.find('input[type="'+ type +'"]').trigger('change');
+
+            if (self.options.options.isNewRecord === false && self.isParents()) {
+                setTimeout(function() {
+                    self.$element.trigger('change');
+                }, 200);
+            }
         },
         createListElement: function(type, val, text, selected, labelOptions, itemOptions, checked) {
             var self = this, $container, $label;
@@ -363,6 +376,24 @@
                     $valueEl.val(null).trigger('change');
                 }
             });
+        },
+        isParents: function() {
+            var self = this;
+            var $formEntry = self.$element.formEntry();
+            var id = self.$element.attr('id');
+            var isParents = false;
+            $.each($formEntry, function(index, el) {
+                var data = el.data();
+                if (data.depends && $.isPlainObject(data.depends)) {
+                    $.each(data.depends, function(name, active) {
+                        // console.log(name);
+                        if (name == id) {
+                            isParents = true;
+                        }
+                    });
+                }
+            });
+            return isParents;
         },
         showLoader: function() {
             var self = this;
@@ -518,6 +549,8 @@
         value: '',
         separator: ',',
         ajaxSettings: {},
-        options: {}
+        options: {
+            isNewRecord: true
+        }
     };
 }));
