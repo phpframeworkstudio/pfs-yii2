@@ -35,7 +35,6 @@
         
         // element
         this.$element = element;
-
         this.initialize();
     }
 
@@ -56,7 +55,11 @@
                 self.load();
             }
 
-            self.$element.trigger('pfs.ajax-input:init');
+            self.$element.on('change', function() {
+                self.$element.trigger('pfs:input-change');
+            });
+
+            self.$element.trigger('pfs:input-init');
         },
 
         /**
@@ -81,7 +84,7 @@
          */
         watcher: function(id, options) {
             var self = this, $dep;
-            $("#"+ id).on('change select2:select krajeeselect2:cleared', function(e) {
+            $("#"+ id).on('change pfs:input-change select2:select krajeeselect2:cleared', function(e) {
                 $dep = $(this);
                 if (!isEmpty($dep.data('select2')) && e.type === 'change') {
                     return;
@@ -92,7 +95,7 @@
                 });
             });
 
-            $("#"+ id).trigger('change');
+            $("#"+ id).trigger('pfs:input-change');
         },
 
         /**
@@ -215,6 +218,8 @@
             // remove temporary
             self.$element.find('.temporary').remove();
 
+            var selected = false;
+
             // render dropdown with optgroup
             if (isOptGroup) {
                 $.each(data, function(label, group) {
@@ -223,31 +228,31 @@
                         'class': 'temporary'
                     });
                     $.each(group, function(val, text) {
-                        var selected = values.indexOf(""+ val) > -1;
+                        selected = values.indexOf(""+ val) > -1;
                         self.createOptionElement(val, text, selected)
                             .appendTo(optGroup);
                     });
                     optGroup.appendTo(self.$element);
                 });
 
-                if (self.options.options.isNewRecord === false && self.isParents()) {
+                if (self.isParents()) {
                     setTimeout(function() {
-                        self.$element.trigger('change');
-                    }, 200);
+                        self.$element.trigger(selected ? 'change' : 'pfs:input-change');
+                    }, 250);
                 }
 
             // render dropdown
             } else {
                 $.each(data, function(val, text) {
-                    var selected = values.indexOf(""+ val) > -1;
+                    selected = values.indexOf(""+ val) > -1;
                     self.createOptionElement(val, text, selected)
                         .appendTo(self.$element);
                 });
 
-                if (self.options.options.isNewRecord === false && self.isParents()) {
+                if (self.isParents()) {
                     setTimeout(function() {
-                        self.$element.trigger('change');
-                    }, 200);
+                        self.$element.trigger(selected ? 'change' : 'pfs:input-change');
+                    }, 250);
                 }
             }
         },
@@ -306,10 +311,10 @@
                 index++;
             });
 
-            if (self.options.options.isNewRecord === false && self.isParents()) {
+            if (self.isParents()) {
                 setTimeout(function() {
-                    self.$element.trigger('change');
-                }, 200);
+                    self.$element.trigger(checked ? 'change' : 'pfs:input-change');
+                }, 250);
             }
         },
         createListElement: function(type, val, text, selected, labelOptions, itemOptions, checked) {
@@ -345,9 +350,13 @@
 
                 // auto selected
                 if (!isEmpty(value) && (''+ index == ''+ value)) {
-                    self.$element.val(val).trigger('change');
+                    // label
+                    self.$element.val(val);
+                    
+                    // value
                     $valueEl.val(index);
-
+                    
+                    self.$element.trigger('pfs:input-change');
                     delete self.options.value;
                 }
             });
@@ -356,24 +365,39 @@
                 source: sources,
                 select: function(e, ui) {
                     e.preventDefault();
-                    self.$element.val(ui.item.label);
-                    $valueEl.val(ui.item.value).trigger('change');
+                    try {
+                        self.$element.val(ui.item.label);
+                        $valueEl.val(ui.item.value).trigger('pfs:input-change');
+                    } catch (e) {
+                    }
                 },
                 change: function(e, ui) {
                     e.preventDefault();
-                    self.$element.val(ui.item.label);
-                    $valueEl.val(ui.item.value).trigger('change');
+                    try {
+                        self.$element.val(ui.item.label);
+                        $valueEl.val(ui.item.value);
+                    } catch (e) {
+                        self.$element.val(null).trigger('pfs:input-change')
+                        $valueEl.val(null).trigger('pfs:input-change');
+                    }
                 },
                 focus: function(e, ui) {
                     e.preventDefault();
-                    self.$element.val(ui.item.label);
-                    $valueEl.val(ui.item.value).trigger('change');
+                    try {
+                        self.$element.val(ui.item.label);
+                        $valueEl.val(ui.item.value);
+                    } catch (e) {
+                        // self.$element.val('');
+                        // $valueEl.val('')
+                    }
                 }
             });
 
-            self.$element.on('change', function(e) {
+            self.$element.on('pfs:input-change', function(e) {
                 if (isEmpty($(this).val())) {
-                    $valueEl.val(null).trigger('change');
+                    $valueEl.val(null).trigger('pfs:input-change');
+                } else {
+                    // console.log('apa ini', $(this).val())
                 }
             });
         },
@@ -406,13 +430,14 @@
                             class: 'pfs__loader-text',
                             selected: true
                         }).prependTo(self.$element);
+                        self.$element.attr('disabled', true);
                     break;
                     case 'text':
                         if (self.$element.prop('placeholder')) {
                             var value = self.$element.attr('placeholder');
                             self.$element.attr('data-placeholder', value);
                         }
-                        self.$element.attr('placeholder', self.options.loadingText);
+                        self.$element.attr('placeholder', self.options.loadingText).attr('disabled', true);
                     break;
                 }
             }
@@ -424,7 +449,8 @@
                     case 'dropdown':
                         self.$element.removeClass('pfs__ajax-loader');
                         self.$element.find('.pfs__loader-text').remove();
-                        // self.$element.trigger('change');
+                        self.$element.trigger('pfs:input-change');
+                        self.$element.removeAttr('disabled');
                     break;
                     case 'text':
                         var value = self.$element.data().placeholder;
@@ -433,7 +459,8 @@
                         if (!isEmpty(value)) {
                             self.$element.attr('placeholder', value);
                         }
-                        // self.$element.trigger('change');
+                        self.$element.trigger('pfs:input-change');
+                        self.$element.removeAttr('disabled');
                     break;
                 }
                 self.$element.removeClass('pfs__ajax-loader');
