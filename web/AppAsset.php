@@ -4,6 +4,7 @@ namespace pfs\yii\web;
 
 use Yii;
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * Asset bundle for the PHP Framework Studio files.
@@ -37,5 +38,9 @@ class AppAsset extends AssetBundle
         Yii::$app->controller->view->registerJs('jQuery(document).on("click change keydown", "[data-toggle=\"dropdown\"]", function() {
     jQuery(this).submenupicker();
 });');
+
+        Yii::$app->controller->view->registerJsFile(Yii::getAlias('@web/js/language-'. Yii::$app->language .'.js'), [
+            'position' => View::POS_HEAD
+        ]);
     }
 }

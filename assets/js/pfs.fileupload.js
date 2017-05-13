@@ -38,9 +38,6 @@
         var fileMinSize = settings.fileMinSize ? settings.fileMinSize * 1024 : undefined;
 
         $fileInput.attr('name', id);
-        var pfs_L = function(a, b) {
-            return b;
-        }
 
         var uploadTemplate = function(o) {
             var $rows = $();
@@ -59,7 +56,7 @@
                         '<td>',
                             '<p class="name" style="word-break: break-all"></p>',
                             '<p class="size">',
-                                pfs_L("pfs_general", "Uploading"),
+                                $.translate("app", "Uploading"),
                             '</p>',
                             '<strong class="error text-danger"></strong>',
                             '<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">',
@@ -74,7 +71,7 @@
                                         '<i class="fa fa-upload"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            pfs_L("pfs_general", "UploadStart"),
+                                            $.translate("app", "UploadStart"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -83,7 +80,7 @@
                                         '<i class="fa fa-ban"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            pfs_L("pfs_general", "UploadCancel"),
+                                            $.translate("app", "UploadCancel"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -142,7 +139,7 @@
                                         '<i class="fa fa-trash"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            pfs_L("pfs_general", "UploadDelete"),
+                                            $.translate("app", "UploadDelete"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -151,7 +148,7 @@
                                         '<i class="fa fa-ban"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            pfs_L("pfs_general", "UploadCancel"),
+                                            $.translate("app", "UploadCancel"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -233,12 +230,12 @@
 
             // if set only
             if (settings.fileMaxLength > 0 && settings.fileMaxLength < curlen) {
-                alert(pfs_L("pfs_general", "UploadMaxLength"));
+                alert($.translate("app", "UploadMaxLength"));
                 return false;
             }
 
             if (settings.fileMaxCount < arr.length) {
-                alert(pfs_L("pfs_general", "UploadMaxNumberOfFiles"));
+                alert($.translate("app", "UploadMaxNumberOfFiles"));
                 return false;
             }
             $fileValue.trigger("change");
@@ -333,10 +330,10 @@
             dropZone: $dropZone,
             pasteZone: $dropZone,
             messages: {
-                acceptFileTypes: pfs_L("pfs_general", "UploadAcceptFileTypes"),
-                maxFileSize: pfs_L("pfs_general", "UploadMaxSize"),
-                maxNumberOfFiles: pfs_L("pfs_general", "UploadMaxNumberOfFiles"),
-                minFileSize: pfs_L("pfs_general", "UploadMinSize")
+                acceptFileTypes: $.translate("app", "UploadAcceptFileTypes"),
+                maxFileSize: $.translate("app", "UploadMaxSize"),
+                maxNumberOfFiles: $.translate("app", "UploadMaxNumberOfFiles"),
+                minFileSize: $.translate("app", "UploadMinSize")
             },
             destroy: function (e, data) {
                 if (e.isDefaultPrevented()) {

@@ -69,4 +69,17 @@ $(document).on('autofill', '[data-autofill]', function() {
     }
 });
 
+$.translate = function(category, message, params, language) {
+    language = language || 'en';
+    try {
+        if (window['translate_'+ language] && window['translate_'+ language][message]) {
+            return window['translate_'+ language][message];
+        }
+    } catch (e) {
+
+    }
+
+    return message;
+}
+
 })(jQuery);
