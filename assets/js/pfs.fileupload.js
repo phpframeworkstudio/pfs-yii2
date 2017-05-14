@@ -71,7 +71,7 @@
                                         '<i class="fa fa-upload"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            $.translate("app", "UploadStart"),
+                                            $.translate("app", "Start upload"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -80,7 +80,7 @@
                                         '<i class="fa fa-ban"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            $.translate("app", "UploadCancel"),
+                                            $.translate("app", "Cancel upload"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -139,7 +139,7 @@
                                         '<i class="fa fa-trash"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            $.translate("app", "UploadDelete"),
+                                            $.translate("app", "Delete upload"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -148,7 +148,7 @@
                                         '<i class="fa fa-ban"></i>',
                                         '&nbsp;',
                                         '<span>',
-                                            $.translate("app", "UploadCancel"),
+                                            $.translate("app", "Cancel upload"),
                                         '</span>',
                                     '</button>'
                                 ].join('')
@@ -230,12 +230,12 @@
 
             // if set only
             if (settings.fileMaxLength > 0 && settings.fileMaxLength < curlen) {
-                alert($.translate("app", "UploadMaxLength"));
+                alert($.translate("app", "Total length of file names exceeds field length"));
                 return false;
             }
 
             if (settings.fileMaxCount < arr.length) {
-                alert($.translate("app", "UploadMaxNumberOfFiles"));
+                alert($.translate("app", "Maximum number of files exceeded"));
                 return false;
             }
             $fileValue.trigger("change");
@@ -330,10 +330,10 @@
             dropZone: $dropZone,
             pasteZone: $dropZone,
             messages: {
-                acceptFileTypes: $.translate("app", "UploadAcceptFileTypes"),
-                maxFileSize: $.translate("app", "UploadMaxSize"),
-                maxNumberOfFiles: $.translate("app", "UploadMaxNumberOfFiles"),
-                minFileSize: $.translate("app", "UploadMinSize")
+                acceptFileTypes: $.translate("app", "Filetype not allowed"),
+                maxFileSize: $.translate("app", "File is too big"),
+                maxNumberOfFiles: $.translate("app", "Maximum number of files exceeded"),
+                minFileSize: $.translate("app", "File is too small")
             },
             destroy: function (e, data) {
                 if (e.isDefaultPrevented()) {

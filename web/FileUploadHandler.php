@@ -14,24 +14,24 @@ class FileUploadHandler extends \UploadHandler
     public function __construct($options = null, $initialize = true, $error_messages = null) {
         parent::__construct($options, $initialize, $error_messages);
         $this->error_messages = [
-            1 => Yii::t('app', 'UploadPhpMaxSize'),
-            2 => Yii::t('app', 'UploadHtmlMaxSize'),
-            3 => Yii::t('app', 'UploadPartially'),
-            4 => Yii::t('app', 'UploadEmpty'),
-            6 => Yii::t('app', 'UploadMissingTemporaryFolder'),
-            7 => Yii::t('app', 'UploadWriteFailed'),
-            8 => Yii::t('app', 'UploadPhpExtensionStopped'),
-            'post_max_size' => Yii::t('app', 'UploadPostMaxSize'),
-            'max_file_size' => Yii::t('app', 'UploadMaxSize'),
-            'min_file_size' => Yii::t('app', 'UploadMinSize'),
-            'accept_file_types' => Yii::t('app', 'UploadAcceptFileTypes'),
-            'max_number_of_files' => Yii::t('app', 'UploadMaxNumberOfFiles'),
-            'max_width' => Yii::t('app', 'UploadMaxWidth'),
-            'min_width' => Yii::t('app', 'UploadMinWidth'),
-            'max_height' => Yii::t('app', 'UploadMaxHeight'),
-            'min_height' => Yii::t('app', 'UploadMinHeight'),
-            'abort' => Yii::t('app', 'UploadAbord'),
-            'image_resize' => Yii::t('app', 'UploadImageResize')
+            1 => Yii::t('app', 'The uploaded file exceeds the upload_max_filesize directive in php.ini'),
+            2 => Yii::t('app', 'Upload html max size'),
+            3 => Yii::t('app', 'The uploaded file was only partially uploaded'),
+            4 => Yii::t('app', 'Upload is empty'),
+            6 => Yii::t('app', 'Missing a temporary folder'),
+            7 => Yii::t('app', 'Failed to write file to disk'),
+            8 => Yii::t('app', 'A php extension stopped the file upload'),
+            'post_max_size' => Yii::t('app', 'The uploaded file exceeds the post_max_size directive in php.ini'),
+            'max_file_size' => Yii::t('app', 'File is too big'),
+            'min_file_size' => Yii::t('app', 'File is too small'),
+            'accept_file_types' => Yii::t('app', 'Filetype not allowed'),
+            'max_number_of_files' => Yii::t('app', 'Upload max number of files'),
+            'max_width' => Yii::t('app', 'Image exceeds maximum width'),
+            'min_width' => Yii::t('app', 'Image requires a minimum width'),
+            'max_height' => Yii::t('app', 'Image exceeds maximum height'),
+            'min_height' => Yii::t('app', 'Image requires a minimum height'),
+            'abort' => Yii::t('app', 'File upload aborted'),
+            'image_resize' => Yii::t('app', 'Failed to resize image')
         ];
     }
 
