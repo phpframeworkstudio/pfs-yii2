@@ -32,5 +32,6 @@ class FileUploadAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'pfs\yii\web\AppAsset'
     ];
 }

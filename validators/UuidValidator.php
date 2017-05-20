@@ -16,7 +16,7 @@ class UuidValidator extends \yii\validators\Validator
         parent::init();
 
         if ($this->message === null) {
-            $this->message = Yii::t('yii', '{attribute} may only contain uuid.');
+            $this->message = Yii::t('yii', '{attribute} may only contain UUID.');
         }
     }
 

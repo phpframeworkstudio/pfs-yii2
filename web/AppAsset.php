@@ -20,7 +20,6 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/bundle.js',
-        // 'js/pfs.yii.filter.js',
         'bootstrap-submenu/dist/js/bootstrap-submenu.js',
     ];
     public $depends = [

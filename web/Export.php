@@ -518,9 +518,9 @@ class Export extends \yii\base\Component
     protected function exportToPdf()
     {
         if ($this->pdfDriver && $this->pdfDriver instanceof \Closure) {
-            call_user_func($this->pdfDriver, $this->exportToHtml(true));
+            return call_user_func($this->pdfDriver, $this->exportToHtml(true));
         } else {
-            $this->exportToPrint();
+            return $this->exportToPrint();
         }
     }
 
