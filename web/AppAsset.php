@@ -16,11 +16,11 @@ class AppAsset extends AssetBundle
     public $sourcePath = '@vendor/phpframeworkstudio/yii/assets';
     public $css = [
         'css/bundle.css',
-        'bootstrap-submenu/dist/css/bootstrap-submenu.css',
+        'third_party/bootstrap-submenu/dist/css/bootstrap-submenu.css',
     ];
     public $js = [
         'js/bundle.js',
-        'bootstrap-submenu/dist/js/bootstrap-submenu.js',
+        'third_party/bootstrap-submenu/dist/js/bootstrap-submenu.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
@@ -33,10 +33,6 @@ class AppAsset extends AssetBundle
         Yii::$app->controller->view->registerJs('var AdminLTEOptions = {
     enableBSToppltip: false
 };', yii\web\View::POS_HEAD);
-
-        Yii::$app->controller->view->registerJs('jQuery(document).on("click change keydown", "[data-toggle=\"dropdown\"]", function() {
-    jQuery(this).submenupicker();
-});');
 
         Yii::$app->controller->view->registerJsFile(Yii::getAlias('@web/js/language-'. Yii::$app->language .'.js'), [
             'position' => View::POS_HEAD

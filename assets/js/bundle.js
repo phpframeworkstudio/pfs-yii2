@@ -81,6 +81,11 @@
             return value;
         }
     });
+    
+    // submenu
+    $(document).on("click change keydown", "[data-toggle='dropdown']", function() {
+      $(this).submenupicker();
+    });
 
     $(document).on('change', '[data-autofill]', function() {
         $(this).trigger('autofill');
