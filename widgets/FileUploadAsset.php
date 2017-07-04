@@ -30,8 +30,8 @@ class FileUploadAsset extends AssetBundle
         'js/pfs.fileupload.js'
     ];
     public $depends = [
-        //'yii\web\YiiAsset',
-        //'yii\bootstrap\BootstrapAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
         //'yii\widgets\ActiveFormAsset',
         //'pfs\yii\web\AppAsset'
     ];
