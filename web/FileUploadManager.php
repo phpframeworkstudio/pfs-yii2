@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\ErrorException;
 use yii\helpers\FileHelper;
+use yii\helpers\ArrayHelper;
 
 require_once __DIR__ .'/../third_party/ImageLib.php';
 
@@ -47,7 +48,7 @@ class FileUploadManager extends Component
                             'traverseSymlinks' => true
                         ]);
                         try {
-                            $sesname = preg_replace('/(.*)temp__(.*?)__ud(.*)/', '$2', $value);
+                            $sesname = preg_replace("/(.*)temp__(.*?)__ud(.*)/", "$2", $value);
                             Yii::$app->session->remove(trim($sesname));
                         } catch (\Exception $e) {
 
@@ -91,7 +92,7 @@ class FileUploadManager extends Component
             $length = $fieldOptions['length'];
             $destination = static::join(Yii::getAlias('@webroot'), $fieldOptions['upload-folder']);
             $source = static::join(Yii::getAlias('@webroot'), $temp);
-            $tempName = preg_replace('/(.*)temp__(.*?)\/(.*)/', '$1temp__$2', $temp);
+            $tempName = preg_replace("/(.*)temp__(.*?)\/(.*)/", "$1temp__$2", $temp);
 
             if (empty($value) || trim($value) == '') {
                 return;
@@ -136,8 +137,8 @@ class FileUploadManager extends Component
 
                     if ($fieldOptions['length'] >= strlen($newName) && copy($sourceFile, static::join($destination, $newName))) {
                         $properties['content'] = $newName;
-                        $properties['file_name'] = $newName;
-                        $properties['raw_name'] = rtrim(str_replace($properties['file_ext'], '', $properties['file_name']), '.');
+                        $properties['fileName'] = $newName;
+                        $properties['rawName'] = rtrim(str_replace($properties['fileExt'], '', $properties['fileName']), '.');
                     } else {
                         $properties = false;
                     }
@@ -200,8 +201,8 @@ class FileUploadManager extends Component
                         if (@copy($sourceFile, static::join($destination, $newName))) {
                             // set new properties
                             $properties['content'] = $newName;
-                            $properties['file_name'] = $newName;
-                            $properties['raw_name'] = rtrim(str_replace($properties['file_ext'], '', $properties['file_name']), '.');
+                            $properties['fileName'] = $newName;
+                            $properties['rawName'] = rtrim(str_replace($properties['fileExt'], '', $properties['fileName']), '.');
                             array_push($values, $properties);
                             array_push($names, $newName);
                         } else {
@@ -283,7 +284,7 @@ class FileUploadManager extends Component
             $source = static::join(Yii::getAlias('@webroot'), $fieldOptions['upload-folder']);
             $destination = static::join(Yii::getAlias('@webroot'), $temp);
             $destinationThumb = static::join($destination, 'thumbnail');
-            $tmpName = preg_replace('/(.*)temp__(.*?)\/(.*)/', '$1temp__$2', $temp);
+            $tmpName = preg_replace("/(.*)temp__(.*?)\/(.*)/", "$1temp__$2", $temp);
 
             // clear
             FileHelper::removeDirectory($destination, [
@@ -325,73 +326,7 @@ class FileUploadManager extends Component
         return;
     }
 
-    protected static function createImageFromBlob($src, $dst, $name, $mime = 'image/jpg')
-    {
-        $dst = rtrim($dst, '/');
-        $types = array(
-            'gif' => 'imagegif',
-            'jpeg' => 'imagejpeg',
-            'jpg' => 'imagejpeg',
-            'png' => 'imagepng',
-            'bmp' => 'imagejpeg'
-        );
-
-        $mimeEx = explode('/', $mime);
-        if (count($mimeEx) > 1 && isset($types[$mimeEx[1]])) {
-            $type = trim($mimeEx[1]);
-            $display = $types[$type];
-
-            $img = imagecreatefromstring($src);
-            if ($type == 'png') {
-                imagealphablending($img, false);
-                imagesavealpha($img, true);
-            }
-            $display($img, $dst . DIRECTORY_SEPARATOR . $name .'.'. $type, 100);
-            imagedestroy($img);
-
-            return $name .'.'. $type;
-        }
-
-        return;
-
-    }
-
-    protected static function encode($str)
-    {
-        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
-    }
-
-    protected static function decode($str)
-    {
-        return base64_decode(str_pad(strtr($str, '-_', '+/'), strlen($str) % 4, '=', STR_PAD_RIGHT));
-    }
-
-    protected static function getDirectoryLastModified($path)
-    {
-        $lastModifiedTime = 0;
-
-        foreach (scandir($path) as $key => $value) {
-            if ($value == '.' || $value == '..') {
-                continue;
-            }
-
-            if (is_file(static::join($path, $value))) {
-                $filemtime = filemtime(static::join($path, $value));
-                if ($filemtime > $lastModifiedTime) {
-                    $lastModifiedTime = $filemtime;
-                }
-            } elseif (is_dir(static::join($path, $value))) {
-                $filemtime = static::getDirectoryLastModified(static::join($path, $value));
-                if ($filemtime > $lastModifiedTime) {
-                    $lastModifiedTime = $filemtime;
-                }
-            }
-        }
-
-        return $lastModifiedTime;
-    }
-
-    protected static function resizeImage($path, $width = 110, $height = 220, $maintainRatio = true)
+    public static function resizeImage($path, $width = 110, $height = 220, $maintainRatio = true)
     {
         if (!is_bool($maintainRatio)) {
             $maintainRatio = true;
@@ -405,18 +340,14 @@ class FileUploadManager extends Component
             'maintain_ratio' => $maintainRatio
         ]);
 
-        if (!$imageLib->resize()) {
-            return false;
-        }
-
-        return true;
+        return $imageLib->resize() === true;
     }
 
     public static function join()
     {
         $startWithDirectorySeparator = false;
-
         $arr = [];
+
         foreach (func_get_args() as $key => $value) {
             if ($key === 0) {
                 if (strpos($value, '/') === 0) {
@@ -443,7 +374,7 @@ class FileUploadManager extends Component
         return $path;
     }
 
-    protected static function getFileProperties($file)
+    public static function getFileProperties($file)
     {
         $phpinfo = pathinfo($file);
         $mime = mime_content_type($file);
@@ -451,19 +382,20 @@ class FileUploadManager extends Component
         $image = getimagesize($file);
 
         $data = array();
-        $data['file_name'] = $phpinfo['basename'];
-        $data['raw_name'] = $phpinfo['filename'];
-        $data['file_ext'] = $phpinfo['extension'];
-        $data['file_type'] = $mime;
-        $data['file_size'] = $size;
+        $data['content'] = null;
+        $data['fileName'] = ArrayHelper::getValue($phpinfo, 'basename');
+        $data['rawName'] = ArrayHelper::getValue($phpinfo, 'filename');
+        $data['fileExt'] = ArrayHelper::getValue($phpinfo, 'extension');
+        $data['fileType'] = $mime;
+        $data['fileSize'] = $size;
         if ($image) {
-            $data['is_image'] = true;
-            $data['image_width'] = $image[0];
-            $data['image_height'] = $image[1];
+            $data['isImage'] = true;
+            $data['imageWidth'] = $image[0];
+            $data['imageHeight'] = $image[1];
         } else {
-            $data['is_image'] = false;
-            $data['image_width'] = 0;
-            $data['image_height'] = 0;
+            $data['isImage'] = false;
+            $data['imageWidth'] = 0;
+            $data['imageHeight'] = 0;
         }
 
         return $data;
@@ -539,21 +471,87 @@ class FileUploadManager extends Component
         return $image;
     }
 
+    protected static function createImageFromBlob($src, $dst, $name, $mime = 'image/jpg')
+    {
+        $dst = rtrim($dst, '/');
+        $types = array(
+            'gif' => 'imagegif',
+            'jpeg' => 'imagejpeg',
+            'jpg' => 'imagejpeg',
+            'png' => 'imagepng',
+            'bmp' => 'imagejpeg'
+        );
+
+        $mimeEx = explode('/', $mime);
+        if (count($mimeEx) > 1 && isset($types[$mimeEx[1]])) {
+            $type = trim($mimeEx[1]);
+            $display = $types[$type];
+
+            $img = imagecreatefromstring($src);
+            if ($type == 'png') {
+                imagealphablending($img, false);
+                imagesavealpha($img, true);
+            }
+            $display($img, $dst . DIRECTORY_SEPARATOR . $name .'.'. $type, 100);
+            imagedestroy($img);
+
+            return $name .'.'. $type;
+        }
+
+        return;
+
+    }
+
+    protected static function encode($str)
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
+    }
+
+    protected static function decode($str)
+    {
+        return base64_decode(str_pad(strtr($str, '-_', '+/'), strlen($str) % 4, '=', STR_PAD_RIGHT));
+    }
+
+    protected static function getDirectoryLastModified($path)
+    {
+        $lastModifiedTime = 0;
+
+        foreach (scandir($path) as $key => $value) {
+            if ($value == '.' || $value == '..') {
+                continue;
+            }
+
+            if (is_file(static::join($path, $value))) {
+                $filemtime = filemtime(static::join($path, $value));
+                if ($filemtime > $lastModifiedTime) {
+                    $lastModifiedTime = $filemtime;
+                }
+            } elseif (is_dir(static::join($path, $value))) {
+                $filemtime = static::getDirectoryLastModified(static::join($path, $value));
+                if ($filemtime > $lastModifiedTime) {
+                    $lastModifiedTime = $filemtime;
+                }
+            }
+        }
+
+        return $lastModifiedTime;
+    }
+
     protected function setFileName($path, $file, $properties = array())
     {
         if ($this->encryptName) {
-            $fileName = md5(uniqid(mt_rand())) .'.'. $properties['file_ext'];
+            $fileName = md5(uniqid(mt_rand())) .'.'. $properties['fileExt'];
         }
 
         if ($this->overwrite || !file_exists(static::join($path, $file))) {
             return $file;
         }
 
-        $fileName = $properties['raw_name'];
+        $fileName = $properties['rawName'];
         $newFileName = '';
         for($i = 1; $i < $this->maxFileIncrementName; $i++) {
-            if (!file_exists(static::join($path, $fileName .' ('.$i.').'. $properties['file_ext']))) {
-                $newFileName = $fileName .' ('.$i.').'. $properties['file_ext'];
+            if (!file_exists(static::join($path, $fileName .' ('.$i.').'. $properties['fileExt']))) {
+                $newFileName = $fileName .' ('.$i.').'. $properties['fileExt'];
                 break;
             }
         }

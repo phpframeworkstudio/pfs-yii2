@@ -172,9 +172,9 @@ class Export extends \yii\base\Component
     ];
 
     /**
-     * @var string Controller id
+     * @var string Model Name
      */
-    public $controller;
+    public $modelName;
 
     /**
      * @var object DataProvider
@@ -217,10 +217,6 @@ class Export extends \yii\base\Component
 
         if (!$this->dataProvider) {
             throw new InvalidConfigException('The "dataProvider" property must be set.');
-        }
-
-        if (!$this->controller) {
-            throw new InvalidConfigException('The "controller" property must be set.');
         }
 
         if ($this->forceDownload && isset(Yii::$app->request->queryParams[$this->forceDownloadParam])) {
@@ -314,7 +310,7 @@ class Export extends \yii\base\Component
                     if (is_array($column)) {
                         $name = $column['name'];
                     }
-                    $result[] = Html::tag('th', strip_tags(Yii::t($this->controller, $name .'.caption')));
+                    $result[] = Html::tag('th', strip_tags(Yii::t($this->modelName, $name .'.caption')));
                 }
                 $result[] = Html::endTag('tr');
                 $result[] = Html::endTag('thead');
@@ -410,8 +406,11 @@ class Export extends \yii\base\Component
                     $result[] = '<br />';
                 }
 
-                $result[] = Html::tag(($isForOffice ? 'h3' : 'p'), strip_tags(Yii::t($this->controller, 'page-'. $page)), [
-                    'style' => ['margin' => '20px 3px 8px 3px']
+                $result[] = Html::tag(($isForOffice ? 'h3' : 'p'), strip_tags(Yii::t($this->modelName, 'Page-'. $page)), [
+                    'style' => [
+                        'margin' => '20px 3px 8px 3px',
+                        'font-weight' => 'bold'
+                    ]
                 ]);        
             }
 
@@ -449,7 +448,7 @@ class Export extends \yii\base\Component
 
                     $result[] = Html::beginTag('tr');
                     if ($this->titleColumns) {
-                        $result[] = Html::tag('td', strip_tags(Yii::t($this->controller, $name .'.caption')), [
+                        $result[] = Html::tag('td', strip_tags(Yii::t($this->modelName, $name .'.caption')), [
                             'style' => 'width: 30%'
                         ]);
                     }
@@ -691,9 +690,9 @@ class Export extends \yii\base\Component
                 $line = [];
                 foreach ($this->columns as $column) {
                     if (is_array($column)) {
-                        $line[] = $this->csvLine(strip_tags(Yii::t($this->controller, $column['name'] .'.caption')));
+                        $line[] = $this->csvLine(strip_tags(Yii::t($this->modelName, $column['name'] .'.caption')));
                     } else {
-                        $line[] = $this->csvLine(strip_tags(Yii::t($this->controller, $column .'.caption')));
+                        $line[] = $this->csvLine(strip_tags(Yii::t($this->modelName, $column .'.caption')));
                     }
                 }
                 $result[] = implode($this->csvSeparator, $line);
@@ -763,12 +762,18 @@ class Export extends \yii\base\Component
     protected function fetchDataProvider()
     {
         if ($this->dataProvider instanceof \yii\data\BaseDataProvider) {
-            return $this->dataProvider->getModels();
+            $dataProvider = $this->dataProvider->getModels();
         } else if ($this->dataProvider instanceof \yii\base\Model) {
-            return [$this->dataProvider];
+            $dataProvider = [$this->dataProvider];
         } else {
             throw new InvalidConfigException('The "dataProvider" property failed.');
         }
+
+        if ($this->modelName === null && count($dataProvider)) {
+            $this->modelName = (new \ReflectionClass($dataProvider[0]))->getShortName();
+        }
+
+        return $dataProvider;
     }
 
 
