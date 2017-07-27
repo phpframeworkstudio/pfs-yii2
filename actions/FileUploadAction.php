@@ -46,7 +46,7 @@ class FileUploadAction extends Action
                         $this->fieldParam => $field,
                         $this->indexParam => $index
                     ]),
-                    'upload_dir' => Yii::getAlias('@webroot'. DIRECTORY_SEPARATOR . $path),
+                    'upload_dir' => Yii::getAlias('@webroot/' . $path),
                     'upload_url' => Yii::getAlias('@web/'. $path),
                     'param_name' => str_replace('-', '_', Html::getInputId($this->model, $field)),
                     'mkdir_mode' => $this->mkdirMode,
