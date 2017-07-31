@@ -64,7 +64,7 @@ class ListPageSizeSelectable extends Widget
         $items = [];
         foreach ($this->selectable as $key => $value) {
             if (is_string($value)) {
-                $items['all'] = $value;
+                $items[$totalCount] = Yii::t('app', $value);
             } else {
                 $items[$value] = $value;
             }

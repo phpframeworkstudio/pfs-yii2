@@ -17,10 +17,12 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/bundle.css',
         'third_party/bootstrap-submenu/dist/css/bootstrap-submenu.css',
+        'third_party/jquery-confirm/jquery-confirm.min.css',
     ];
     public $js = [
         'js/bundle.js',
         'third_party/bootstrap-submenu/dist/js/bootstrap-submenu.js',
+        'third_party/jquery-confirm/jquery-confirm.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

@@ -81,17 +81,32 @@
             return value;
         }
     });
+
+    // translate
+    $.translate = function(category, message, params, language) {
+        language = language || 'en';
+        try {
+            if (window['translate_'+ language] && window['translate_'+ language][message]) {
+                return window['translate_'+ language][message];
+            }
+        } catch (e) {
+
+        }
+
+        return message;
+    }
     
     // submenu
     $(document).on("click change keydown", "[data-toggle='dropdown']", function() {
       $(this).submenupicker();
     });
 
+    // autofill
     $(document).on('change', '[data-autofill]', function() {
         $(this).trigger('autofill');
-        // console.log('heh');
     });
 
+    // autofill
     $(document).on('autofill', '[data-autofill]', function() {
         var data = $(this).data();
         var $this = $(this);
@@ -136,17 +151,88 @@
         }
     });
 
-    $.translate = function(category, message, params, language) {
-        language = language || 'en';
-        try {
-            if (window['translate_'+ language] && window['translate_'+ language][message]) {
-                return window['translate_'+ language][message];
-            }
-        } catch (e) {
+    // dialog confirm
+    $(document).on('click', '[data-dialog-confirm]', function(event) {
+        event.preventDefault();
+        var $that = $(this);
+        var data = $that.data();
+        var title = data.dialogTitle || false;
+        var titleClient = data.dialogTitleClient || false;
+        var message = data.dialogMessage || false;
+        var messageClient = data.dialogMessageClient || false;
+        var method = data.dialogMethod || false;
 
+        if (titleClient) {
+            title = $.translate('app', titleClient);
+        }
+        
+        if (messageClient) {
+            message = $.translate('app', messageClient);
         }
 
-        return message;
-    }
+        if (message) {
+            $.confirm({
+                title: title,
+                theme: 'bootstrap',
+                content: message,
+                buttons: {
+                    yes: {
+                        text: $.translate('app', 'Yes'),
+                        btnClass: 'btn-primary min-width-60',
+                        action: function() {
+                            if (method) {
+                                $that.data('method', 'post');
+                            }
+                            yii.handleAction($that, event);
+                            $that.removeData('method');
+                        }
+                    },
+                    no: {
+                        text: $.translate('app', 'No'),
+                        btnClass: 'btn-default min-width-60',
+                        action: function() {
+                            $that.removeData('method');
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    // dialog alert
+    $(document).on('click', '[data-dialog-alert]', function(event) {
+        event.preventDefault();
+        var $that = $(this);
+        var data = $that.data();
+        var title = data.dialogTitle || false;
+        var titleClient = data.dialogTitleClient || false;
+        var message = data.dialogMessage || false;
+        var messageClient = data.dialogMessageClient || false;
+
+        if (titleClient) {
+            title = $.translate('app', titleClient);
+        }
+        
+        if (messageClient) {
+            message = $.translate('app', messageClient);
+        }
+        
+        if (message) {
+            $.alert({
+                title: title,
+                theme: 'bootstrap',
+                content: message,
+                buttons: {
+                    ok: {
+                        text: $.translate('app', 'Ok'),
+                        btnClass: 'btn-primary min-width-60',
+                        action: function() {
+
+                        }
+                    }
+                }
+            });
+        }
+    });
 
 })(jQuery);

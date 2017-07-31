@@ -9,6 +9,7 @@ use yii\helpers\Url;
 class MultipleColumnHandler extends \yii\base\Widget
 {
     const METHOD_POST = 'POST';
+
     const METHOD_GET = 'GET';
 
     /**
@@ -92,23 +93,52 @@ class MultipleColumnHandler extends \yii\base\Widget
 $(document).on('click', '{$buttonSelector}', function() {
     var values = jQuery('#{$this->gridId}').yiiGridView('getSelectedRows');
     if (values.length) {
-        if (confirm('{$this->actionMessage}')) {
-            $.ajax({
-                url: '{$this->url}',
-                data: {keys: values},
-                dataType: 'json',
-                type: '{$this->method}',
-                success: function(e) {
-                    {$this->success}
+        $.confirm({
+            title: $.translate('app', 'Confirm'),
+            theme: 'bootstrap',
+            content: '{$this->actionMessage}',
+            buttons: {
+                yes: {
+                    text: $.translate('app', 'Yes'),
+                    btnClass: 'btn-primary min-width-60',
+                    action: function() {
+                        $.ajax({
+                            url: '{$this->url}',
+                            data: {keys: values},
+                            dataType: 'json',
+                            type: '{$this->method}',
+                            success: function(e) {
+                                {$this->success}
+                            },
+                            error: function(e) {
+                                {$this->error}
+                            },
+                            complete: function() {}
+                        });
+                    }
                 },
-                error: function(e) {
-                    {$this->error}
-                },
-                complete: function() {}
-            });
-        }
+                no: {
+                    text: $.translate('app', 'No'),
+                    btnClass: 'btn-default min-width-60',
+                    action: function() {}
+                }
+            }
+        });
     } else {
-        alert('{$this->emptyMessage}');
+        $.alert({
+            title: $.translate('app', 'Alert'),
+            theme: 'bootstrap',
+            content: '{$this->emptyMessage}',
+            buttons: {
+                ok: {
+                    text: $.translate('app', 'Ok'),
+                    btnClass: 'btn-primary min-width-60',
+                    action: function() {
+
+                    }
+                }
+            }
+        });
     }
 });
 EOF;

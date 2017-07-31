@@ -9,6 +9,7 @@ use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\ButtonDropdown;
 use pfs\yii\helpers\Html;
+use yii\helpers\Json;
 
 class AdvancedActionColumn extends ActionColumn
 {
@@ -100,8 +101,13 @@ class AdvancedActionColumn extends ActionColumn
 					'title' => Yii::t('app', 'Delete'),
 					'aria-label' => Yii::t('app', 'Delete'),
 					'data-pjax' => '0',
-					'data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'data-method' => 'post'		
+					'data-dialog-confirm' => true,
+					'data-dialog-title' => Yii::t('app', 'Delete'),
+					// 'data-dialog-message' => Yii::t('app', 'Are you sure you want to delete this item?'),
+					'data-dialog-message-client' => 'Do you want to delete selected record(s)?',
+					'data-dialog-method' => 'post'
+					// 'data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    // 'data-method' => 'post'
 				],
 				'iconCls' => 'fa fa-fw fa-trash'
 			];
